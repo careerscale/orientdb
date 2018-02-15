@@ -216,6 +216,9 @@ public class ODirectMemoryOnlyDiskCache extends OAbstractWriteCache implements O
       int intId = extractFileId(fileId);
 
       final MemoryFile memoryFile = getFile(intId);
+      if (pageIndex >= memoryFile.size()) {
+        return null;
+      }
       final OCacheEntry cacheEntry = memoryFile.loadPage(pageIndex);
       if (cacheEntry == null)
         return null;
@@ -715,7 +718,6 @@ public class ODirectMemoryOnlyDiskCache extends OAbstractWriteCache implements O
 
     return firstIntId == secondIntId;
   }
-
 
   @Override
   public String restoreFileById(long fileId) throws IOException {
